@@ -1,0 +1,37 @@
+{
+  "name": "FitMind Care",
+  "short_name": "FitMind",
+  "description": "AI-powered health companion with mood tracking and biometric monitoring",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/lovable-uploads/6cb36700-ecda-4915-9661-e8db3af5f5ab.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/6cb36700-ecda-4915-9661-e8db3af5f5ab.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "medical"],
+  "shortcuts": [
+    {
+      "name": "Log Mood",
+      "url": "/mental-health",
+      "description": "Track your daily mood"
+    },
+    {
+      "name": "Voice Health",
+      "url": "/voice-health",
+      "description": "Log health by voice"
+    }
+  ]
+}

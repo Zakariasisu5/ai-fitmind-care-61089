@@ -1,0 +1,176 @@
+
+@keyframes burn {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes spread-fire {
+  0% {
+    clip-path: polygon(50% 100%, 50% 100%, 50% 100%, 50% 100%);
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    clip-path: polygon(-50% -50%, 150% -50%, 150% 150%, -50% 150%);
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+@keyframes ember-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--x), -100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smoke {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-150px) scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes text-burn {
+  0% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+  }
+  60% {
+    opacity: 0.8;
+    filter: brightness(1.5) blur(1px);
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    filter: brightness(2) blur(3px);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flower-fall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.burning {
+  position: relative;
+  overflow: hidden;
+}
+
+.burning::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, 
+    #ff4800, 
+    #ff6b08, 
+    #ff8700, 
+    #ff0000, 
+    #ff4800
+  );
+  background-size: 400% 400%;
+  z-index: 50;
+  mix-blend-mode: color-dodge;
+  animation: burn 3s linear infinite, spread-fire 1s ease-out forwards;
+  pointer-events: none;
+}
+
+.burning::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, #000 100%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  animation: spread-fire 1s ease-out forwards;
+  z-index: 51;
+}
+
+.smoke-particle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at center, rgba(200, 200, 200, 0.8), transparent);
+  animation: smoke 1s ease-out infinite;
+  z-index: 52;
+  pointer-events: none;
+}
+
+.ember {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #ff4800;
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 53;
+  pointer-events: none;
+}
+
+.burning-text {
+  animation: text-burn 1s ease-out forwards;
+  animation-delay: var(--delay);
+}
+
+.logout-text {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 2rem;
+  z-index: 54;
+  text-shadow: 0 0 10px rgba(255, 68, 0, 0.5);
+  animation: text-burn 1s ease-out forwards;
+  pointer-events: none;
+}
+
+.flower {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at center, #FF69B4, #FFB6C1);
+  border-radius: 50%;
+  animation: flower-fall 3s linear forwards;
+  z-index: 100;
+}
+
+.welcome-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 600px;
+  z-index: 100;
+  text-align: center;
+  animation: scale-in 0.5s ease-out forwards;
+}

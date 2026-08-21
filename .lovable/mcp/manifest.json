@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://sxbxjqxcdnhfbwaoaatt.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "fitmind-care-mcp",
+      "version": "0.1.0",
+      "title": "AI FitMind Care"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Get my FitMind Care profile",
+        "description": "Return the signed-in user's FitMind Care profile (name, id).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_recent_voice_logs",
+        "title": "List recent voice health logs",
+        "description": "Return the signed-in user's most recent voice health logs, including transcription, extracted health data, and agent analysis.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10,
+              "description": "Maximum number of voice logs to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "log_mood",
+        "title": "Log a mood entry",
+        "description": "Record a mood entry for the signed-in user with optional stress, anxiety, energy, and sleep quality scores.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "mood": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Short mood label, e.g. 'happy', 'anxious', 'tired'."
+            },
+            "mood_score": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Overall mood 1-10 (10 best). Null if unknown."
+            },
+            "stress_level": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Stress level 1-10. Null if unknown."
+            },
+            "anxiety_level": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Anxiety level 1-10. Null if unknown."
+            },
+            "energy_level": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Energy level 1-10. Null if unknown."
+            },
+            "sleep_quality": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Sleep quality 1-10. Null if unknown."
+            },
+            "notes": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Optional free-text notes."
+            }
+          },
+          "required": [
+            "mood",
+            "mood_score",
+            "stress_level",
+            "anxiety_level",
+            "energy_level",
+            "sleep_quality",
+            "notes"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_recent_moods",
+        "title": "List recent mood entries",
+        "description": "Return the signed-in user's most recent mood entries with scores and notes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10,
+              "description": "Maximum number of mood entries to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "log_symptom",
+        "title": "Log a symptom",
+        "description": "Record a symptom for the signed-in user with severity, duration, body area, and notes.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "symptom": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Name of the symptom, e.g. 'headache', 'nausea'."
+            },
+            "severity": {
+              "type": "string",
+              "enum": [
+                "mild",
+                "moderate",
+                "severe",
+                "emergency"
+              ],
+              "description": "Severity of the symptom."
+            },
+            "duration": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "How long the symptom has lasted, e.g. '2 hours', '3 days'."
+            },
+            "body_area": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Body area affected, e.g. 'head', 'chest'."
+            },
+            "notes": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Optional free-text notes."
+            }
+          },
+          "required": [
+            "symptom",
+            "severity",
+            "duration",
+            "body_area",
+            "notes"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_recent_symptoms",
+        "title": "List recent symptoms",
+        "description": "Return the signed-in user's most recent symptom entries.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20,
+              "description": "Maximum number of entries to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "log_nutrition_entry",
+        "title": "Log a meal or nutrition entry",
+        "description": "Record a meal or nutrition entry for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "meal_type": {
+              "type": "string",
+              "enum": [
+                "breakfast",
+                "lunch",
+                "dinner",
+                "snack"
+              ],
+              "description": "Type of meal."
+            },
+            "food_items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Free-text description of what was eaten."
+            },
+            "calories": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Estimated calories, or null if unknown."
+            },
+            "water_intake": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Water intake in liters for this entry, or null."
+            },
+            "notes": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Optional free-text notes."
+            }
+          },
+          "required": [
+            "meal_type",
+            "food_items",
+            "calories",
+            "water_intake",
+            "notes"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "log_health_metrics",
+        "title": "Log biometric health metrics",
+        "description": "Record a snapshot of biometric health metrics (heart rate, blood pressure, blood oxygen, sleep, steps, weight) for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "heart_rate": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 20,
+                  "maximum": 250
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Heart rate in bpm, or null."
+            },
+            "blood_pressure": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Blood pressure as 'systolic/diastolic', e.g. '120/80', or null."
+            },
+            "blood_oxygen": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 50,
+                  "maximum": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "SpO2 percentage 50-100, or null."
+            },
+            "sleep_hours": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 24
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Hours slept 0-24, or null."
+            },
+            "steps": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Step count, or null."
+            },
+            "weight": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Weight in kilograms, or null."
+            }
+          },
+          "required": [
+            "heart_rate",
+            "blood_pressure",
+            "blood_oxygen",
+            "sleep_hours",
+            "steps",
+            "weight"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

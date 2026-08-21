@@ -16,6 +16,7 @@ A comprehensive AI-powered health companion that helps users monitor, track, and
 - [Edge Functions](#edge-functions)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
 - [Security & Privacy](#security--privacy)
 - [Roadmap](#roadmap)
@@ -211,6 +212,18 @@ Each function validates requests, processes data through the AI gateway, and ret
 
 - Node.js and a package manager such as `bun` or `npm`
 - A Lovable Cloud backend project configured for authentication and database
+
+## Environment Variables
+
+Create a local `.env` file in the project root. The file is ignored by Git and must not be committed.
+
+```dotenv
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+VITE_SUPABASE_PROJECT_ID=your-project-id
+```
+
+Get these values from the project settings in Supabase or Lovable Cloud. Configure backend-only secrets with the Supabase CLI or dashboard instead of placing them in the frontend `.env` file.
 
 ### Install dependencies
 

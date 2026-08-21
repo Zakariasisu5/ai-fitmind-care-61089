@@ -2,7 +2,7 @@
 
 A comprehensive AI-powered health companion that helps users monitor, track, and improve their physical and mental well-being through voice logging, symptom tracking, mood monitoring, nutrition logging, cognitive training, and real-time AI insights.
 
----
+--
 
 ## Table of Contents
 
